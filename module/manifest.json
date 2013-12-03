@@ -1,0 +1,7 @@
+{
+    "description": "Audio and video playback API.\n\nThe media module allows you to play audio and video using native functionality of the device.", 
+    "name": "media", 
+    "platform_version": "v2.0.0", 
+    "version": "2.1",
+    "changes": "* Fix problems with repeatedly calling play on the same audio player on Android."
+}

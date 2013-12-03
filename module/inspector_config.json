@@ -1,0 +1,10 @@
+{
+	"modules": {
+		"media": {
+			"version": "2.0",
+			"config": {
+				"enable_background_audio": true
+			}
+		}
+	}
+}
