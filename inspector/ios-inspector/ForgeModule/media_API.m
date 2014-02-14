@@ -63,7 +63,11 @@ static NSMutableDictionary *audioPlayers;
 		}
 		
 		// Required to play in background
-		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+        if([[[[ForgeApp sharedApp] configForModule:@"media"] objectForKey:@"enable_background_audio"] boolValue]){
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+        } else {
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:&error];
+        }
 
 		[audioPlayers setObject:[NSMutableDictionary dictionaryWithDictionary:@{@"player": audioPlayer}] forKey:[task callid]];
 		[task success:[task callid]];
