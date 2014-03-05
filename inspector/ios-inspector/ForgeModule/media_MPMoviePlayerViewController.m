@@ -46,4 +46,9 @@
     return YES;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+	return [[ForgeApp sharedApp].viewController prefersStatusBarHidden];
+}
+
 @end
