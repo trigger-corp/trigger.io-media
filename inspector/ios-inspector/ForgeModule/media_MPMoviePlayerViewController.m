@@ -35,6 +35,7 @@
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 	if (self.task) {
 		[self.task success:nil];
 		self.task = nil;
