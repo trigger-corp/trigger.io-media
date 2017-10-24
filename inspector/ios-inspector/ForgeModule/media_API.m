@@ -19,22 +19,16 @@ static NSMutableDictionary *audioPlayers;
 
 + (void)videoPlay:(ForgeTask*)task uri:(NSString*)uri {
     NSURL *url = [NSURL URLWithString:uri];
-    
     if ([[url scheme] isEqualToString:@"content"] && [[url host] isEqualToString:@"forge-content"]) {
         // Special Forge URI, get original URI to stream video.
         NSDictionary *file = [url queryAsDictionary];
         uri = [file objectForKey:@"uri"];
     }
 
-    if ([uri hasPrefix:@"/"]) {
-        NSURL *assetUrl = [NSURL fileURLWithPath:uri];
-        media_MPMoviePlayerViewController *player = [[media_MPMoviePlayerViewController alloc] initWithContentURL:assetUrl];
-        player.task = task;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[ForgeApp sharedApp] viewController] presentMoviePlayerViewControllerAnimated:player];
-        });
+    __block NSURL *assetUrl = nil;
+    __block media_MPMoviePlayerViewController *player;
 
-    } else if ([uri hasPrefix:@"photo-library://video/"]) {
+    if ([uri hasPrefix:@"photo-library://video/"]) {
         NSString *localId = [[[NSURL URLWithString:uri] path] substringFromIndex:1];
         PHFetchResult *assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
         if ([assetResult count] == 0) {
@@ -42,28 +36,33 @@ static NSMutableDictionary *audioPlayers;
             return;
         }
         PHAsset *asset = [assetResult firstObject];
+
+        // we need to block for async result because MPMoviePlayer does not like being invoked from the callback
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             if (![avAsset isKindOfClass:[AVURLAsset class]]) {
                 [task error:@"Failed to load video file" type:@"EXPECTED_FAILURE" subtype:nil];
                 return;
             }
             AVURLAsset* urlAsset = (AVURLAsset*)avAsset;
-            media_MPMoviePlayerViewController *player = [[media_MPMoviePlayerViewController alloc] initWithContentURL:urlAsset.URL];
-            player.task = task;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[[ForgeApp sharedApp] viewController] presentMoviePlayerViewControllerAnimated:player];
-            });
+            assetUrl = urlAsset.URL;
+            dispatch_semaphore_signal(semaphore);
         }];
-        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
+    } else if ([uri hasPrefix:@"/"]) {
+        assetUrl = [NSURL fileURLWithPath:uri];
+
     } else {
         uri = [uri stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-        NSURL *assetUrl = [NSURL URLWithString:uri];
-        media_MPMoviePlayerViewController *player = [[media_MPMoviePlayerViewController alloc] initWithContentURL:assetUrl];
-        player.task = task;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[ForgeApp sharedApp] viewController] presentMoviePlayerViewControllerAnimated:player];
-        });
+        assetUrl = [NSURL URLWithString:uri];
     }
+
+    player = [[media_MPMoviePlayerViewController alloc] initWithContentURL:assetUrl];
+    player.task = task;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[ForgeApp sharedApp] viewController] presentMoviePlayerViewControllerAnimated:player];
+    });
 }
 
 
