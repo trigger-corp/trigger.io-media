@@ -16,40 +16,40 @@
 
 @synthesize task;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+
+- (void)viewDidLoad {
     [super viewDidLoad];
 }
 
-- (void)viewDidUnload
-{
+
+- (void)viewDidUnload {
     [super viewDidUnload];
 }
 
+
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-	if (self.task) {
-		[self.task success:nil];
-		self.task = nil;
-	}	
+    if (self.task) {
+        [self.task success:nil];
+        self.task = nil;
+    }	
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-	return [[ForgeApp sharedApp].viewController prefersStatusBarHidden];
+
+- (BOOL)prefersStatusBarHidden {
+    return [[ForgeApp sharedApp].viewController prefersStatusBarHidden];
 }
 
 @end

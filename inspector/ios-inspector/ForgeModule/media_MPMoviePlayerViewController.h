@@ -9,7 +9,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface media_MPMoviePlayerViewController : MPMoviePlayerViewController {
-	
+    
 }
 
 @property (readwrite, retain) ForgeTask *task; 
