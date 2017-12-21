@@ -1,8 +1,8 @@
 {
-    "changes": "* iOS 11 Support",
+    "changes": "* Fixed: Conflict with Android file module",
     "description": "Audio and video playback API.\n\nThe media module allows you to play audio and video using native functionality of the device.",
     "min_platform_version": "v2.6.3",
     "namespace": "media",
     "platform_version": "v2.6.3",
-    "version": "2.5"
+    "version": "2.6"
 }
