@@ -7,8 +7,9 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+
 #import "media_API.h"
-#import "media_MPMoviePlayerViewController.h"
+#import "media_AVPlayerViewController.h"
 
 typedef void (^media_TimerBlock)(NSTimeInterval time);
 
@@ -23,10 +24,14 @@ static NSMutableDictionary *audioPlayers;
         [task error:@"Failed to load video file" type:@"EXPECTED_FAILURE" subtype:nil];
         return;
     }
-    media_MPMoviePlayerViewController *player = [[media_MPMoviePlayerViewController alloc] initWithContentURL:assetUrl];
-    player.task = task;
+    AVPlayer *player = [AVPlayer playerWithURL:assetUrl];
+    media_AVPlayerViewController *playerController = [[media_AVPlayerViewController alloc] init];
+    playerController.player = player;
+    playerController.task = task;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[[ForgeApp sharedApp] viewController] presentMoviePlayerViewControllerAnimated:player];
+        [[[ForgeApp sharedApp] viewController] presentViewController:playerController animated:TRUE completion:^{
+            [playerController.player play];
+        }];
     });
 }
 

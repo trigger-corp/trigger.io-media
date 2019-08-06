@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 Trigger Corp. All rights reserved.
 //
 
-#import "media_MPMoviePlayerViewController.h"
+#import "media_AVPlayerViewController.h"
 
-@interface media_MPMoviePlayerViewController ()
+@interface media_AVPlayerViewController ()
 
 @end
 
-@implementation media_MPMoviePlayerViewController
+@implementation media_AVPlayerViewController
 
 @synthesize task;
 

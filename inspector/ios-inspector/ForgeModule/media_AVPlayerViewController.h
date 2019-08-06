@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Trigger Corp. All rights reserved.
 //
 
-#import <MediaPlayer/MediaPlayer.h>
+#import <AVKit/AVKit.h>
 
-@interface media_MPMoviePlayerViewController : MPMoviePlayerViewController {
+@interface media_AVPlayerViewController : AVPlayerViewController {
     
 }
 
