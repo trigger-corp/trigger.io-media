@@ -1,8 +1,15 @@
+/* global forge, $, asyncTest, askQuestion, ok, start */
+
 module("forge.media");
 
-if (forge.is.mobile()) {
+forge.tools.getLocal("fixtures/media/test.mp3", function (audioFile) {
+    forge.tools.getLocal("fixtures/media/small.mp4", function (videoFile) {
+        testsWithFixtures(audioFile, videoFile);
+    });
+});
+
+var testsWithFixtures = function (audioFile, videoFile) {
     asyncTest("Play audio", 1, function() {
-        var audioFile = forge.inspector.getFixture('media', 'test.mp3');
         forge.media.createAudioPlayer(audioFile, function (player) {
             player.play(function () {
                 askQuestion("Is audio playing?", {
@@ -115,7 +122,7 @@ if (forge.is.mobile()) {
     });
 
     asyncTest("Play local video in assets", 1, function() {
-        forge.media.videoPlay(forge.inspector.getFixture("media", "small.mp4").uri);
+        forge.media.videoPlay(videoFile);
 
         askQuestion("Did another video just play?", {
             Yes: function () {
@@ -156,4 +163,4 @@ if (forge.is.mobile()) {
             });
         });
     }
-}
+};
