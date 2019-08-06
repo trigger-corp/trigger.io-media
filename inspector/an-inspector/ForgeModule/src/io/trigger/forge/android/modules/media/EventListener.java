@@ -1,12 +1,12 @@
 package io.trigger.forge.android.modules.media;
 
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import android.media.MediaPlayer;
+
 import io.trigger.forge.android.core.ForgeApp;
 import io.trigger.forge.android.core.ForgeEventListener;
 

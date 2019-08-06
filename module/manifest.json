@@ -1,8 +1,8 @@
 {
-    "changes": "* Fixed: Conflict with Android file module",
+    "changes": "* Replace iOS deprecated MPMoviePlayer with AVPlayer\n* Migrate to androidx",
     "description": "Audio and video playback API.\n\nThe media module allows you to play audio and video using native functionality of the device.",
-    "min_platform_version": "v2.6.3",
+    "min_platform_version": "v2.8.0",
     "namespace": "media",
-    "platform_version": "v2.6.3",
-    "version": "2.6"
+    "platform_version": "v2.8.0",
+    "version": "2.7"
 }
