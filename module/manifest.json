@@ -1,8 +1,8 @@
 {
-    "changes": "* Replace iOS deprecated MPMoviePlayer with AVPlayer\n* Migrate to androidx",
+    "changes": "* Fixed: Black screen on iOS 13 after viewing video",
     "description": "Audio and video playback API.\n\nThe media module allows you to play audio and video using native functionality of the device.",
     "min_platform_version": "v2.8.0",
     "namespace": "media",
     "platform_version": "v2.8.0",
-    "version": "2.7"
+    "version": "2.8"
 }

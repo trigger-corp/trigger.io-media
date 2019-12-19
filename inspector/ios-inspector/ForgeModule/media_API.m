@@ -28,6 +28,12 @@ static NSMutableDictionary *audioPlayers;
     media_AVPlayerViewController *playerController = [[media_AVPlayerViewController alloc] init];
     playerController.player = player;
     playerController.task = task;
+    // workaround for black screen on iOS 13 after closing view controller 
+    if (@available(iOS 13.0, *)) {
+        playerController.modalPresentationStyle = UIModalPresentationPopover;
+    } else {
+        playerController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[ForgeApp sharedApp] viewController] presentViewController:playerController animated:TRUE completion:^{
             [playerController.player play];
