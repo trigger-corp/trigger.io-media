@@ -162,5 +162,36 @@ var testsWithFixtures = function (audioFile, videoFile) {
                 });
             });
         });
+
+        asyncTest("Gallery Video Player", 1, function() {
+            forge.file.getVideo({
+                source: "gallery"
+            }, function (file) {
+                forge.file.URL(file, function (url) {
+                    forge.media.videoPlay(url, function () {
+                        askQuestion("Did your video just play?", {
+                            Yes: function () {
+                                ok(true, "video capture successful");
+                                start();
+                            },
+                            No: function () {
+                                ok(false, "didn't play back just-captured video");
+                                start();
+                            }
+                        });
+                    }, function (e) {
+                        ok(false, "API call failure: "+e.message);
+                        start();
+                    });
+                }, function (e) {
+                    ok(false, "API call failure: "+e.message);
+                    start();
+                });
+            },	function (e) {
+                ok(false, "API call failure: "+e.message);
+                start();
+            });
+        });
+
     }
 };
