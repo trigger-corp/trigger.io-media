@@ -29,11 +29,6 @@
 }
 
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
-
-
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     if (self.task) {
@@ -42,11 +37,9 @@
     }	
 }
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotate {
     return YES;
 }
-
 
 - (BOOL)prefersStatusBarHidden {
     return [[ForgeApp sharedApp].viewController prefersStatusBarHidden];

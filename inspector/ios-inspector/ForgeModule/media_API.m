@@ -18,22 +18,38 @@ static NSMutableDictionary *audioPlayers;
 @implementation media_API
 
 
-+ (void)videoPlay:(ForgeTask*)task uri:(NSString*)uri {
-    NSURL *assetUrl = [ForgeFile toAssetURL:uri];
-    if (assetUrl == nil) {
++ (void)playVideoFile:(ForgeTask*)task file:(NSDictionary*)file {
+    NSError *error = nil;
+    ForgeFile *forgeFile = [ForgeFile withScriptObject:file error:&error];
+    if (error != nil) {
+        return [task error:error.localizedDescription type:@"EXPECTED_FAILURE" subtype:nil];
+    }
+    
+    NSURL *url = [ForgeStorage nativeURL:forgeFile];
+    
+    [media_API playVideoURL:task url:url.absoluteString];
+}
+
+
++ (void)playVideoURL:(ForgeTask*)task url:(NSString*)url {
+    NSURL *parsedURL = [NSURL URLWithString:url];
+    if (parsedURL == nil) {
         [task error:@"Failed to load video file" type:@"EXPECTED_FAILURE" subtype:nil];
         return;
     }
-    AVPlayer *player = [AVPlayer playerWithURL:assetUrl];
+    
+    AVPlayer *player = [AVPlayer playerWithURL:parsedURL];
     media_AVPlayerViewController *playerController = [[media_AVPlayerViewController alloc] init];
     playerController.player = player;
     playerController.task = task;
+    
     // workaround for black screen on iOS 13 after closing view controller 
     if (@available(iOS 13.0, *)) {
         playerController.modalPresentationStyle = UIModalPresentationPopover;
     } else {
         playerController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[ForgeApp sharedApp] viewController] presentViewController:playerController animated:TRUE completion:^{
             [playerController.player play];
@@ -42,13 +58,18 @@ static NSMutableDictionary *audioPlayers;
 }
 
 
-+ (void)createAudioPlayer:(ForgeTask*)task file:(NSObject*)file {
++ (void)createAudioPlayer:(ForgeTask*)task file:(NSDictionary*)file {
+    NSError *error = nil;
+    ForgeFile *forgeFile = [ForgeFile withScriptObject:file error:&error];
+    if (error != nil) {
+        return [task error:error.localizedDescription type:@"EXPECTED_FAILURE" subtype:nil];
+    }
+    
     if (audioPlayers == nil) {
         audioPlayers = [[NSMutableDictionary alloc] init];
     }
     
-    ForgeFile *forgeFile = [[ForgeFile alloc] initWithObject:file];
-    [forgeFile data:^(NSData *data) {
+    [forgeFile contents:^(NSData *data) {
         if (!data) {
             [task error:@"Failed to load audio file" type:@"EXPECTED_FAILURE" subtype:nil];
             return;

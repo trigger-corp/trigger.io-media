@@ -10,6 +10,4 @@
 
 @interface media_API : NSObject
 
-+ (void)videoPlay:(ForgeTask*)task uri:(NSString*)uri;
-
 @end
