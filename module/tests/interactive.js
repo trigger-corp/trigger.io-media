@@ -2,8 +2,8 @@
 
 module("forge.media");
 
-forge.tools.getLocal("fixtures/media/test.mp3", function (audioFile) {
-    forge.tools.getLocal("fixtures/media/small.mp4", function (videoFile) {
+forge.tools.getFileFromSourceDirectory("fixtures/media/test.mp3", function (audioFile) {
+    forge.tools.getFileFromSourceDirectory("fixtures/media/small.mp4", function (videoFile) {
         testsWithFixtures(audioFile, videoFile);
     });
 });
@@ -107,7 +107,7 @@ var testsWithFixtures = function (audioFile, videoFile) {
     });
 
     asyncTest("Play remote video", 1, function() {
-        forge.media.videoPlay("https://ops.trigger.io/75d92dce/tests/big_buck_bunny.mp4");
+        forge.media.playVideoURL("https://ops.trigger.io/75d92dce/tests/big_buck_bunny.mp4");
 
         askQuestion("Did a video just play?", {
             Yes: function () {
@@ -122,7 +122,7 @@ var testsWithFixtures = function (audioFile, videoFile) {
     });
 
     asyncTest("Play local video in assets", 1, function() {
-        forge.media.videoPlay(videoFile);
+        forge.media.playVideoFile(videoFile);
 
         askQuestion("Did another video just play?", {
             Yes: function () {
@@ -138,60 +138,27 @@ var testsWithFixtures = function (audioFile, videoFile) {
 
     if (forge.file) {
         asyncTest("Play local video", 1, function() {
-            forge.file.getVideo(function (video) {
-                forge.file.URL(video, function (url) {
-                    askQuestion("Were you just prompted to select a video?", {
-                        Yes: function () {
-                            forge.media.videoPlay(url);
-                            askQuestion("Did that video play?", {
-                                Yes: function () {
-                                    ok(true, "Success");
-                                    start();
-                                },
-                                No: function () {
-                                    ok(false, "User claims failure");
-                                    start();
-                                }
-                            });
-                        },
-                        No: function () {
-                            ok(false, "User claims failure");
-                            start();
-                        }
-                    });
-                });
-            });
-        });
-
-        asyncTest("Gallery Video Player", 1, function() {
-            forge.file.getVideo({
-                source: "gallery"
-            }, function (file) {
-                forge.file.URL(file, function (url) {
-                    forge.media.videoPlay(url, function () {
-                        askQuestion("Did your video just play?", {
+            forge.file.getVideo(function (file) {
+                askQuestion("Were you just prompted to select a video?", {
+                    Yes: function () {
+                        forge.media.playVideoFile(file);
+                        askQuestion("Did that video play?", {
                             Yes: function () {
-                                ok(true, "video capture successful");
+                                ok(true, "Success");
                                 start();
                             },
                             No: function () {
-                                ok(false, "didn't play back just-captured video");
+                                ok(false, "User claims failure");
                                 start();
                             }
                         });
-                    }, function (e) {
-                        ok(false, "API call failure: "+e.message);
+                    },
+                    No: function () {
+                        ok(false, "User claims failure");
                         start();
-                    });
-                }, function (e) {
-                    ok(false, "API call failure: "+e.message);
-                    start();
+                    }
                 });
-            },	function (e) {
-                ok(false, "API call failure: "+e.message);
-                start();
             });
         });
-
     }
 };
