@@ -8,19 +8,46 @@ The ``forge.media`` namespace allows you to play video or audio using native pla
 Enable Background Audio
 :   If this is `true` then audio players will continue to play even when the app is running in the background.
 
+
 ##API
 
 !method: forge.media.videoPlay(url, success, error)
+!description: Deprecated in favour of `forge.media.playVideoURL`
+
+!method: forge.media.playVideoURL(url, success, error)
 !param: url `string` URL to video
 !param: success `function()` callback to be invoked when no errors occur
 !description: Play a video file found at a URL, fullscreen on the device. The video formats that work vary from device to device - make sure to test codec support properly!
 !platforms: iOS, Android
 !param: error `function(content)` called with details of any error which may occur
 
-> ::Note:: To allow users to select or capture videos using their device you may use the [file module](/modules/file/current/docs/index.html).
+    forge.media.playVideoURL("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", function () {
+      // success
+    });
+
+
+!method: forge.media.playVideoFile(url, success, error)
+!param: file `File` File object created using [forge.file](/modules/file/current/docs/index.html) methods representing video file
+!param: success `function()` callback to be invoked when no errors occur
+!description: Play a video file fullscreen on the device. The video formats that work vary from device to device - make sure to test codec support properly!
+!platforms: iOS, Android
+!param: error `function(content)` called with details of any error which may occur
+
+**Example**:
+
+    forge.file.getVideo(function (file) {
+      forge.media.playVideoFile(file, function () {
+        // success
+      });
+    });
+
+
 
 !method: forge.media.createAudioPlayer(file, success, error)
-!param: file `file`  File object created using [forge.file](/modules/file/current/docs/index.html) methods representing audio object
+!description: Deprecated in favour of `forge.media.playAudioFile`
+
+!method: forge.media.playAudioFile(file, success, error)
+!param: file `File`  File object created using [forge.file](/modules/file/current/docs/index.html) methods representing audio object
 !param: success `function(player)` callback to be invoked when no errors occur (argument is a player object)
 !description: Create a audio player object from a media file which can then be used to play the audio.
 !platforms: iOS, Android
@@ -48,7 +75,7 @@ same manner as other Forge methods:
 
 **Example**:
 
-    forge.file.getLocal("music.mp3", function (file) {
+    forge.file.getFileFromSourceDirectory("music.mp3", function (file) {
       forge.media.createAudioPlayer(file, function (player) {
         player.play();
       });
