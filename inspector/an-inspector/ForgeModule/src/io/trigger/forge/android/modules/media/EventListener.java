@@ -1,18 +1,19 @@
 package io.trigger.forge.android.modules.media;
 
+import android.media.MediaPlayer;
+
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Map.Entry;
-
-import android.media.MediaPlayer;
 
 import io.trigger.forge.android.core.ForgeApp;
 import io.trigger.forge.android.core.ForgeEventListener;
 
 public class EventListener extends ForgeEventListener {
 	private HashSet<MediaPlayer> paused = new HashSet<MediaPlayer>();
-	@Override
+
+    @Override
 	public void onStop() {
 		paused.clear();
 		if (!ForgeApp.configForPlugin("media").has("enable_background_audio")
@@ -51,4 +52,5 @@ public class EventListener extends ForgeEventListener {
 		}
 		paused.clear();
 	}
+
 }
