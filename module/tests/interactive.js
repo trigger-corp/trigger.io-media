@@ -136,6 +136,7 @@ var testsWithFixtures = function (audioFile, videoFile) {
         });
     });
 
+
     if (forge.file) {
         asyncTest("Play local video", 1, function() {
             forge.file.getVideo(function (file) {
