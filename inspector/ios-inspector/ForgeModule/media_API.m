@@ -58,7 +58,7 @@ static NSMutableDictionary *audioPlayers;
 }
 
 
-+ (void)createAudioPlayer:(ForgeTask*)task file:(NSDictionary*)file {
++ (void)playAudioFile:(ForgeTask*)task file:(NSDictionary*)file {
     NSError *error = nil;
     ForgeFile *forgeFile = [ForgeFile withScriptObject:file error:&error];
     if (error != nil) {
